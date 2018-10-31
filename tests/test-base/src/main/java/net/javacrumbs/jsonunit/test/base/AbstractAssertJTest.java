@@ -16,9 +16,12 @@
 package net.javacrumbs.jsonunit.test.base;
 
 import net.javacrumbs.jsonunit.assertj.JsonAssert.ConfigurableJsonAssert;
+import net.javacrumbs.jsonunit.assertj.JsonSoftAssertions;
 import net.javacrumbs.jsonunit.core.Option;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -63,6 +66,7 @@ public abstract class AbstractAssertJTest {
         assertThatJson("{\"a\":1, \"b\":2}").isEqualTo("{\"b\":2, \"a\":1}");
     }
 
+
     @Test
     void shouldAssertLenient() {
         assertThatJson("{\"a\":\"1\", \"b\":2}").isEqualTo("{b:2, a:'1'}");
@@ -99,6 +103,33 @@ public abstract class AbstractAssertJTest {
                 "  <{\"a\":1,\"b\":{\"c\":3}}>\n" +
                 "to contain value:\n" +
                 "  <{\"c\":5}>");
+    }
+
+
+    @Test
+    public void objectShouldContainComplexValueErrorSoftly() {
+        JsonSoftAssertions soft = new JsonSoftAssertions();
+
+        soft.assertThatJson("{\"root\":{\"a\":1, \"b\": {\"c\" :3}}}")
+            .node("root")
+            .isObject()
+            .containsValue(json("{\"c\" :5}"));
+
+        assertThatThrownBy(soft::assertAll)
+            .hasMessage("[Different value found in node \"root\"] \n" +
+                "Expecting:\n" +
+                "  <{\"a\":1, \"b\":{\"c\":3}}>\n" +
+                "to contain value:\n" +
+                "  <{\"c\":5}>");
+    }
+
+    @Test
+    public void testSofAssert() {
+        SoftAssertions soft = new SoftAssertions();
+
+        soft.assertThat("string").usingComparator(Comparator.naturalOrder()).isEqualTo("string2");
+
+        soft.assertAll();
     }
 
     @Test
