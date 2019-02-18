@@ -20,6 +20,7 @@ import net.javacrumbs.jsonunit.assertj.JsonSoftAssertions;
 import net.javacrumbs.jsonunit.core.Option;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.MultipleFailuresError;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -107,29 +108,27 @@ public abstract class AbstractAssertJTest {
 
 
     @Test
-    public void objectShouldContainComplexValueErrorSoftly() {
+    void objectShouldContainComplexValueErrorSoftly() {
         JsonSoftAssertions soft = new JsonSoftAssertions();
 
         soft.assertThatJson("{\"root\":{\"a\":1, \"b\": {\"c\" :3}}}")
-            .node("root")
-            .isObject()
-            .containsValue(json("{\"c\" :5}"));
+            .node("root.b")
+            .isEqualTo(json("{\"c\" :5}"));
 
         assertThatThrownBy(soft::assertAll)
-            .hasMessage("[Different value found in node \"root\"] \n" +
-                "Expecting:\n" +
-                "  <{\"a\":1, \"b\":{\"c\":3}}>\n" +
-                "to contain value:\n" +
-                "  <{\"c\":5}>");
+            .hasMessage("JSON documents are different:\n" +
+                "Different value found in node \"root.b.c\", \n" +
+                "Expected :5\n" +
+                "Actual   :3\n");
     }
 
     @Test
-    public void testSofAssert() {
+    void testSoftAssert() {
         SoftAssertions soft = new SoftAssertions();
 
         soft.assertThat("string").usingComparator(Comparator.naturalOrder()).isEqualTo("string2");
 
-        soft.assertAll();
+        assertThatThrownBy(soft::assertAll).isInstanceOf(MultipleFailuresError.class);
     }
 
     @Test

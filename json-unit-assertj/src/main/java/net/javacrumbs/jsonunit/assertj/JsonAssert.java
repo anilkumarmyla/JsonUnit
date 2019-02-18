@@ -25,7 +25,7 @@ import net.javacrumbs.jsonunit.core.internal.Path;
 import net.javacrumbs.jsonunit.core.listener.DifferenceListener;
 import net.javacrumbs.jsonunit.jsonpath.JsonPathAdapter;
 import org.assertj.core.api.AbstractAssert;
-import org.assertj.core.api.AbstractCharSequenceAssert;
+import org.assertj.core.api.AbstractStringAssert;
 import org.assertj.core.api.BigDecimalAssert;
 import org.assertj.core.api.BooleanAssert;
 import org.assertj.core.api.ListAssert;
@@ -199,7 +199,7 @@ public class JsonAssert extends AbstractAssert<JsonAssert, Object> {
     }
 
     @Override
-    public AbstractCharSequenceAssert<?, String> asString() {
+    public AbstractStringAssert<?> asString() {
         return isString();
     }
 
