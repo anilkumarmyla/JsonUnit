@@ -11,13 +11,13 @@
         <johnzon.version>1.1.12</johnzon.version>
         <geronimo.json11.version>1.1</geronimo.json11.version>
         <jsonorg.version>20180130</jsonorg.version>
-        <slf4j.version>1.7.25</slf4j.version>
+        <slf4j.version>1.7.28</slf4j.version>
         <symbolic.name>${project.groupId}.${project.artifactId}</symbolic.name>
         <osgi.importPackage>*</osgi.importPackage>
         <osgi.exportPackage />
         <assertj.version>3.10.0</assertj.version>
         <target.java.version>1.8</target.java.version>
-        <junit-jupiter.version>5.3.1</junit-jupiter.version>
+        <junit-jupiter.version>5.5.1</junit-jupiter.version>
     </properties>
     <packaging>pom</packaging>
 
